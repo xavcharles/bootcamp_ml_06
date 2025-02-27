@@ -76,6 +76,5 @@ def fit_(x, y, theta, alpha, max_iter):
     for i in range(max_iter):
         nabla = simple_gradient(x, y, new_theta)
         new_theta = new_theta - alpha * nabla
-        # print(new_theta)
     return new_theta
 
