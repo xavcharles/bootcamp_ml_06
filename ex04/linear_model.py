@@ -121,6 +121,9 @@ class MyLinearRegression():
         """
         return (np.dot((y_hat - y).flatten(), (y_hat - y).flatten()) / (y.shape[0]))
     
+    def loss_(self, y, y_hat):
+        return (self.mse_(y, y_hat) / 2)
+
     def plot_hypothesis(self, x, y):
         """Plot the data and prediction line from three non-empty numpy.ndarray.
         Args:
@@ -141,29 +144,55 @@ class MyLinearRegression():
         plt.legend()
         plt.show()
 
-    def plot_loss_functions(self, x, y):
+    def plot_loss_function(self, x, y, i):
         # xx = np.linspace(self.thetas[1] - 2.3, self.thetas[1] + 2.3, 100)
         thetas = []
         mse = []
-        max_theta = self.thetas[1][0] + 2.3
-        self.thetas[1] = self.thetas[1] - 2.3
+        max_theta = self.thetas[1][0] + 5
+        self.thetas[1] = self.thetas[1] - 5
         while self.thetas[1][0] < max_theta:
             y_hat = self.predict_(x)
             mse.append(self.mse_(y, y_hat))
             self.thetas[1] += 0.046
-            print(self.thetas[1])
             thetas.append(self.thetas[1][0])
-            print(thetas)
         mse = np.array(mse)
-        print(thetas)
         thetas = np.array(thetas)
-        print(thetas)
-        # y_hats = np.array()
-        # mses = np.array([self.mse_])
+        # plt.plot(thetas, mse, label="loss function", color='black', linewidth=1, linestyle='-')
+        loss = mse / 2
+        colors = ['black', 'green', 'red', 'blue', 'orange', 'purple']
+        plt.plot(thetas, loss, label=f"loss function with theta0 = {self.thetas[0][0]}", color=colors[i], linewidth=1, linestyle='-')
+        # plt.grid(True)
+        # plt.legend()
+        # plt.show()
 
-        y_hat = self.predict_(x)
-        plt.plot(thetas, mse, label="loss function", color='black', linewidth=1, linestyle='-')
+    def plot_and_show_losses(self, x, y):
+        old_theta0 = self.thetas[0][0]
+        for i in range(3):
+            old_theta1 = self.thetas[1][0]
+            self.plot_loss_function(x, y, i)
+            self.thetas[0] += 3
+            self.thetas[1][0] = old_theta1
+        self.thetas[0][0] = old_theta0
+        for i in range(3):
+            old_theta1 = self.thetas[1][0]
+            self.thetas[0] -= 3
+            self.plot_loss_function(x, y, i + 3)
+            self.thetas[1][0] = old_theta1
+
+        plt.xlim(-14.5, -3.5)
+        plt.ylim(10, 150)
         plt.grid(True)
         plt.legend()
         plt.show()
+        
 
+
+def __main__():
+    data = pd.read_csv("are_blue_pills_magics.csv")
+    Xpill = np.array(data['Micrograms']).reshape(-1,1)
+    Yscore = np.array(data['Score']).reshape(-1,1)
+    linear_model1 = MyLinearRegression(np.array([[89.0], [-8]]))
+    linear_model1.plot_and_show_losses(Xpill, Yscore)
+
+if __name__=="__main__":
+    __main__()

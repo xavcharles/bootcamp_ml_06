@@ -35,8 +35,8 @@ def predict_(x, theta):
     Raises:
     This function should not raise any Exceptions.
     """
-    y = add_intercept(x)
-    return np.dot(y, theta)
+    x_bis = add_intercept(x)
+    return np.dot(x_bis, theta)
 
 def simple_gradient(x, y, theta):
     """Computes a gradient vector from three non-empty numpy.arrays, with a for-loop.

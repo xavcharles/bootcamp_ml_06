@@ -45,8 +45,8 @@ class MyLinearRegression():
         Raises:
         This function should not raise any Exceptions.
         """
-        y = self.add_intercept(x)
-        y_hat = np.dot(y, self.thetas)
+        x_bis = self.add_intercept(x)
+        y_hat = np.dot(x_bis, self.thetas)
         return y_hat
 
     def simple_gradient(self, x, y):
@@ -83,12 +83,9 @@ class MyLinearRegression():
         Raises:
             This function should not raise any Exception.
         """
-        # new_theta = self.thetas
         for i in range(self.max_iter):
             nabla = self.simple_gradient(x, y)
-            # new_theta = new_theta - self.alpha * nabla
             self.thetas = self.thetas - self.alpha * nabla
-        # self.thetas = new_theta
 
     def loss_elem_(self, y, y_hat):
         """
